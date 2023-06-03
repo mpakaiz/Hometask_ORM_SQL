@@ -57,7 +57,7 @@ class Sale(Base):
 
     id = sq.Column(sq.Integer, primary_key=True)
     price = sq.Column(sq.FLOAT(precision=10), nullable=False)  # sq.Float
-    date_sale = sq.Column(sq.String(length=25))  # нужен чек на дату больше сегодняшней или 1900 sq.Date
+    date_sale = sq.Column(sq.Date)  # нужен чек на дату больше сегодняшней или 1900 sq.Date
     id_stock = sq.Column(sq.Integer, sq.ForeignKey("stock.id"), nullable=False)
     count = sq.Column(sq.Integer)  # нужен чек на отрицательное количество
 

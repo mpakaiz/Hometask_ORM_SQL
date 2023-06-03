@@ -128,6 +128,19 @@ class Database():
         for c in selected.all():
             print(f'{c[0]} | {c[1]} | {str(c[2])} | {str(c[3][:10])}')
 
+    def get_shops(self, publisher):
+        selection = self.session.query(Book.title, Shop.name, Sale.price, Sale.date_sale).select_from(Shop).\
+            join(Stock).\
+            join(Book).\
+            join(Publisher).\
+            join(Sale)
+        if publisher.isdigit():
+            res = selection.filter(Publisher.id == publisher).all()
+        else:
+            res = selection.filter(Publisher.name == publisher).all()
+        for title, name, price, date_sale in res:
+            print(f'{title: <40} | {name: <10} | {price: <8} | {date_sale.strftime("%d-%m-%Y")}')
+
     def delete(self):
         self.session.query(Sale).delete()
         self.session.query(Stock).delete()
@@ -138,10 +151,16 @@ class Database():
         self.session.close()
 
 
-db = Database()
+
+# db = Database()
 
 # db.delete()
 # db.create_tables()
 # db.fill_db_from_json()
 # db.check()
-db.show_publisher_shop()
+# db.show_publisher_shop()
+
+if __name__ == '__main__':
+    db = Database()
+    publisher = input('Введите имя или ID издателя для поиска магазина: ')
+    db.get_shops(publisher)
